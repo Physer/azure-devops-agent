@@ -1,10 +1,10 @@
-FROM alpine
+FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy
 
-RUN apk update
-RUN apk upgrade
-RUN apk add bash curl git icu-libs jq
+RUN apt update
+RUN apt upgrade -y
+RUN apt install -y curl git jq libicu70
 
-ENV TARGETARCH="linux-musl-x64"
+ENV TARGETARCH="linux-x64"
 
 WORKDIR /azp/
 
