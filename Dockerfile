@@ -1,34 +1,16 @@
-FROM ubuntu:18.04
+FROM alpine
 
-# To make it easier for build and release pipelines to run apt-get,
-# configure apt to not require confirmation (assume the -y argument by default)
-ENV DEBIAN_FRONTEND=noninteractive
-RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
+RUN apk update
+RUN apk upgrade
+RUN apk add bash curl git icu-libs jq
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates \
-    curl \
-    jq \
-    git \
-    iputils-ping \
-    libcurl4 \
-    libicu60 \
-    libunwind8 \
-    netcat \
-    libssl1.0 \
-    zip \
-    unzip \
-  && rm -rf /var/lib/apt/lists/*
+ENV TARGETARCH="linux-musl-x64"
 
-RUN curl -LsS https://aka.ms/InstallAzureCLIDeb | bash \
-  && rm -rf /var/lib/apt/lists/*
+WORKDIR /azp/
 
-# Can be 'linux-x64', 'linux-arm64', 'linux-arm', 'rhel.6-x64'.
-ENV TARGETARCH=linux-x64
+COPY ./start.sh ./
+RUN chmod +x ./start.sh
 
-WORKDIR /azp
+ENV AGENT_ALLOW_RUNASROOT="true"
 
-COPY ./start.sh .
-RUN chmod +x start.sh
-
-ENTRYPOINT ["./start.sh"]
+ENTRYPOINT ./start.sh
