@@ -1,13 +1,18 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy
+FROM ubuntu:jammy
+ENV TARGETARCH="linux-x64"
 
 RUN apt update && \
-apt upgrade -y && \
-apt install -y curl git jq libicu70 ca-certificates gnupg && \
-mkdir -p /etc/apt/keyrings
-RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
-RUN apt update && \
-apt install nodejs -y
+    apt upgrade -y && \
+    apt install -y curl git jq libicu70 unzip
+
+# Install Azure CLI
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+
+# Install Node JS
+WORKDIR /nodejs
+RUN curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "./.fnm" --skip-shell
+ENV PATH="/nodejs/.fnm:$PATH"
+RUN /bin/sh -c "eval $(fnm env) && fnm install lts-latest && fnm use lts-latest && fnm alias default lts-latest"
 
 ENV TARGETARCH="linux-x64"
 
@@ -18,4 +23,4 @@ RUN chmod +x ./start.sh
 
 ENV AGENT_ALLOW_RUNASROOT="true"
 
-ENTRYPOINT ./start.sh
+ENTRYPOINT [ "./start.sh" ]

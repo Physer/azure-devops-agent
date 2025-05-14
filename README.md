@@ -1,14 +1,22 @@
 # Azure DevOps Agent
 
 ## Introduction
+
 This repository houses a pre-fab buildagent for Azure Devops in Docker.
 
 ## Source
+
 The source for this buildagent can be found at Microsoft's documentation regarding [Docker agents for Azure Devops](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/docker?view=azure-devops)
 
 ## How to use
+
 Create a container based on this Docker image, [hosted at the Docker hub](https://hub.docker.com/r/physer/azuredevops-agent).
 For the required environment variables, see [Microsoft's documentation](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/docker?view=azure-devops#environment-variables)
+
+Additionally you can take the `compose.yaml` file as an example. Be sure to copy the `.env.example` file and rename it to `.env`.
+
 ## Additional software
+
 Some additional software has been installed on this image:
-- NodeJS v20
+
+- NodeJS v22.15
