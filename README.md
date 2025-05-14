@@ -11,9 +11,11 @@ The source for this buildagent can be found at Microsoft's documentation regardi
 ## How to use
 
 Create a container based on this Docker image, [hosted at the Docker hub](https://hub.docker.com/r/physer/azuredevops-agent).
-For the required environment variables, see [Microsoft's documentation](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/docker?view=azure-devops#environment-variables)
+For more information on the required environment variables, see [Microsoft's documentation](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/docker?view=azure-devops#environment-variables).
 
-Additionally you can take the `compose.yaml` file as an example. Be sure to copy the `.env.example` file and rename it to `.env`.
+You can use the following `docker run` command. Be sure to replace the environment variable's values with your organization values: `docker run --name selfhosted_agent -d -e AZP_URL=https://dev.azure.com/organizationname  -e AZP_TOKEN=personalaccesstoken  -e AZP_AGENT_NAME=selfhosted_devops_agent -e AZP_POOL="Self-hosted agents" physer/azuredevops-agent:latest`
+
+There is also a `compose.yaml` file using `Docker Compose` for easy local testing. If you want to use this, be sure to copy over `.env.example` and rename the copy to `.env`. Fill the environment variables correctly as specified above.
 
 ## Additional software
 
